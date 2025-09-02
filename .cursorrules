@@ -1,0 +1,281 @@
+# 🏃‍♂️ Running App - Règles de développement pour l'IA
+
+## 📋 Contexte du projet
+Vous développez une application de running en Vue 3 avec Vite, utilisant Supabase comme backend. L'application suit une architecture de sécurité stricte en 3 niveaux pour protéger les données de santé des utilisateurs.
+
+## 🛠️ Stack technique
+- **Frontend**: Vue 3 + Composition API + `<script setup>`
+- **Build tool**: Vite
+- **Styling**: Tailwind CSS v4
+- **State management**: Pinia
+- **Routing**: Vue Router 4
+- **Backend**: Supabase (PostgreSQL + Auth + RLS)
+- **Package manager**: npm
+
+## 🏗️ Architecture de sécurité (CRITIQUE)
+
+### Niveau 1: Métadonnées Auth (Non-sensibles)
+- **Stockage**: `auth.users.user_metadata`
+- **Contenu**: first_name, last_name, display_name, avatar_url, preferences
+- **Accès**: Utilisateur authentifié uniquement
+
+### Niveau 2: Données de santé (Sensibles)
+- **Stockage**: Table `user_health_data` avec RLS strict
+- **Contenu**: birth_date, weight, height, gender, activity_level, medical_conditions
+- **Sécurité**: RLS + validation SQL + chiffrement de connexion
+
+### Niveau 3: Données ultra-sensibles (Chiffrées)
+- **Stockage**: Champs `encrypted_*` avec chiffrement côté client
+- **Contenu**: Notes médicales privées, données GPS précises
+- **Sécurité**: AES-256 avant envoi + RLS
+
+## 📁 Structure des dossiers
+```
+src/
+├── components/          # Composants réutilisables
+├── stores/             # Stores Pinia (auth, health, runs, goals)
+├── router/             # Configuration Vue Router
+├── utils/              # Utilitaires et helpers
+├── assets/             # Images, icônes, etc.
+└── style.css           # Styles globaux
+
+test/                   # Tests unitaires et d'intégration
+├── unit/               # Tests unitaires des composants
+├── integration/        # Tests d'intégration des stores
+├── e2e/                # Tests end-to-end
+└── fixtures/           # Données de test
+
+guide/                  # Documentation technique
+├── SECURE_DATABASE_SETUP.md
+├── SECURITY_GUIDE.md
+├── API_DOCUMENTATION.md
+└── DEPLOYMENT_GUIDE.md
+```
+
+## 🎯 Règles de développement
+
+### Vue 3 + Composition API
+- **TOUJOURS** utiliser `<script setup>` pour les composants
+- **TOUJOURS** utiliser Composition API (ref, reactive, computed, watch)
+- **ÉVITER** Options API sauf cas exceptionnels
+- **UTILISER** TypeScript quand possible pour la sécurité des types
+
+### Gestion d'état avec Pinia
+- **SÉPARER** les stores par domaine de sécurité:
+  - `useAuthStore()` - Métadonnées utilisateur (niveau 1)
+  - `useSecureProfileStore()` - Données de santé (niveau 2)
+  - `useRunsStore()` - Données d'activité
+  - `useGoalsStore()` - Objectifs utilisateur
+- **TOUJOURS** vérifier l'authentification avant accès aux données sensibles
+- **UTILISER** des getters pour les calculs dérivés (BMI, etc.)
+
+### Sécurité Supabase
+- **JAMAIS** créer de tables sans RLS activé
+- **TOUJOURS** utiliser des politiques restrictives (user_id only)
+- **JAMAIS** exposer de données sensibles via des endpoints publics
+- **TOUJOURS** valider les données côté serveur avec des contraintes SQL
+- **UTILISER** `auth.uid()` pour toutes les requêtes sensibles
+
+### Styling avec Tailwind CSS
+- **UTILISER** les classes utilitaires Tailwind
+- **CRÉER** des composants réutilisables pour les patterns UI
+- **MAINTENIR** une cohérence visuelle (couleurs, espacements, typographie)
+- **OPTIMISER** pour mobile-first
+
+### Gestion des erreurs
+- **TOUJOURS** gérer les erreurs d'authentification
+- **TOUJOURS** afficher des messages d'erreur utilisateur-friendly
+- **LOGGER** les erreurs pour le debugging
+- **VALIDER** les données avant envoi à Supabase
+
+### Tests
+- **CRÉER** des tests unitaires pour tous les composants critiques
+- **TESTER** les stores Pinia avec des mocks Supabase
+- **COUVRIR** les fonctions de sécurité et validation
+- **UTILISER** Vitest pour les tests unitaires
+- **ORGANISER** les tests dans `/test` avec sous-dossiers appropriés
+- **ÉCRIRE** des tests d'intégration pour les flux utilisateur complets
+
+## 🚫 Interdictions strictes
+
+### Sécurité
+- ❌ **JAMAIS** stocker de données sensibles dans le localStorage
+- ❌ **JAMAIS** créer de politiques RLS permissives
+- ❌ **JAMAIS** exposer d'API publiques pour données de santé
+- ❌ **JAMAIS** utiliser des clés API en dur dans le code
+
+### Code
+- ❌ **JAMAIS** utiliser Options API (sauf migration)
+- ❌ **JAMAIS** créer de composants sans `<script setup>`
+- ❌ **JAMAIS** ignorer les erreurs de linting
+- ❌ **JAMAIS** commiter de fichiers .env
+- ❌ **JAMAIS** créer de fichiers .md à la racine (sauf README.md)
+- ❌ **JAMAIS** commiter de code sans tests pour les fonctions critiques
+
+## ✅ Bonnes pratiques
+
+### Composants Vue
+```vue
+<template>
+  <div class="p-4 bg-white rounded-lg shadow">
+    <h2 class="text-xl font-semibold mb-4">{{ title }}</h2>
+    <slot />
+  </div>
+</template>
+
+<script setup>
+import { computed } from 'vue'
+
+const props = defineProps({
+  title: {
+    type: String,
+    required: true
+  }
+})
+
+// Utiliser computed pour les valeurs dérivées
+const displayTitle = computed(() => props.title.toUpperCase())
+</script>
+```
+
+### Stores Pinia sécurisés
+```js
+import { defineStore } from 'pinia'
+import { supabase } from '@/utils/supabase'
+
+export const useSecureProfileStore = defineStore('secureProfile', () => {
+  const healthData = ref(null)
+  const loading = ref(false)
+  const error = ref(null)
+
+  const fetchHealthData = async (userId) => {
+    if (!userId) throw new Error('User ID required')
+    
+    loading.value = true
+    try {
+      const { data, error } = await supabase
+        .from('user_health_data')
+        .select('*')
+        .eq('user_id', userId)
+        .single()
+      
+      if (error) throw error
+      healthData.value = data
+    } catch (err) {
+      error.value = err.message
+    } finally {
+      loading.value = false
+    }
+  }
+
+  return {
+    healthData: readonly(healthData),
+    loading: readonly(loading),
+    error: readonly(error),
+    fetchHealthData
+  }
+})
+```
+
+### Requêtes Supabase sécurisées
+```js
+// ✅ CORRECT - Avec RLS et validation
+const { data, error } = await supabase
+  .from('user_health_data')
+  .select('weight, height, birth_date')
+  .eq('user_id', auth.user.id)
+  .single()
+
+// ❌ INCORRECT - Sans filtrage user_id
+const { data, error } = await supabase
+  .from('user_health_data')
+  .select('*')
+```
+
+## 🎨 UI/UX Guidelines
+
+### Design system
+- **Couleurs**: Palette cohérente (bleus pour la santé, verts pour les objectifs)
+- **Typographie**: Hiérarchie claire avec Tailwind (text-sm, text-lg, text-xl)
+- **Espacements**: Utiliser l'échelle Tailwind (p-4, m-2, space-y-4)
+- **Composants**: Cards, buttons, forms avec styles cohérents
+
+### Responsive design
+- **Mobile-first**: Commencer par mobile, puis desktop
+- **Breakpoints**: sm (640px), md (768px), lg (1024px), xl (1280px)
+- **Navigation**: Menu hamburger sur mobile, navigation horizontale sur desktop
+
+## 📊 Fonctionnalités principales
+
+### Authentification
+- Inscription/Connexion avec email
+- Confirmation email obligatoire
+- Gestion des sessions
+- Déconnexion sécurisée
+
+### Profil utilisateur
+- Données de base (nom, prénom, avatar)
+- Données de santé (poids, taille, âge, conditions médicales)
+- Préférences (unités, langue)
+
+### Suivi d'activité
+- Enregistrement des courses
+- Historique des performances
+- Statistiques et graphiques
+- Export des données
+
+### Objectifs
+- Création d'objectifs personnalisés
+- Suivi des progrès
+- Notifications de rappel
+- Célébration des réussites
+
+## 🔧 Outils de développement
+
+### Scripts disponibles
+- `npm run dev` - Serveur de développement
+- `npm run build` - Build de production
+- `npm run preview` - Prévisualisation du build
+- `npm run test` - Lancer les tests unitaires
+- `npm run test:watch` - Tests en mode watch
+- `npm run test:coverage` - Tests avec couverture
+
+### Linting et formatage
+- Respecter les règles ESLint
+- Formater le code avec Prettier
+- Vérifier les types TypeScript
+- Maintenir une couverture de tests > 80%
+
+## 🚀 Déploiement
+
+### Variables d'environnement
+- `VITE_SUPABASE_URL` - URL du projet Supabase
+- `VITE_SUPABASE_ANON_KEY` - Clé publique Supabase
+- **JAMAIS** commiter les fichiers .env
+
+### Build de production
+- Optimiser les images
+- Minifier le CSS/JS
+- Vérifier la sécurité avant déploiement
+
+## 📝 Documentation
+
+### Commentaires de code
+- Documenter les fonctions complexes
+- Expliquer les décisions de sécurité
+- Ajouter des exemples d'utilisation
+
+### README
+- Instructions d'installation
+- Configuration de l'environnement
+- Guide de contribution
+
+### Documentation technique
+- **PLACER** tous les fichiers .md (sauf README.md) dans `/guide`
+- **DOCUMENTER** l'architecture de sécurité
+- **EXPLIQUER** les décisions techniques importantes
+- **MAINTENIR** la documentation à jour avec le code
+
+---
+
+**⚠️ RAPPEL CRITIQUE**: La sécurité des données de santé est la priorité absolue. Toujours respecter l'architecture en 3 niveaux et les politiques RLS strictes.

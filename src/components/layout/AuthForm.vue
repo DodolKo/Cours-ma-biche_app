@@ -86,6 +86,9 @@ import ToggleAuthButton from '../ui/ToggleAuthButton.vue'
 // Store
 const authStore = useAuthStore()
 
+// Emits
+const emit = defineEmits(['auth-success'])
+
 // État local
 const email = ref('')
 const password = ref('')
@@ -132,6 +135,9 @@ async function handleSubmit() {
         email.value = ''
         password.value = ''
       }
+      
+      // Émettre l'événement pour notifier le parent
+      emit('auth-success', { isLogin: isLoginMode.value, user: authStore.user })
     } else {
       showMessage(result.error, 'error')
     }
