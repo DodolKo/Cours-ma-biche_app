@@ -1,5 +1,7 @@
 # 🏃‍♂️ Running App - Application de Course Simple
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/64dea26c-519b-44ec-ad24-e2d8f3b6c3d3/deploy-status)](https://app.netlify.com/projects/coursmabiche/deploys)
+
 Une application Vue 3 moderne pour le suivi de course avec authentification Supabase simple et efficace.
 
 ## ✨ Fonctionnalités
