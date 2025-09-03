@@ -3,11 +3,11 @@
   publish = "dist"
   
   # Commande de build
-  command = "npm run build"
+  command = "npm run build:netlify"
 
 [build.environment]
-  # Version de Node.js
-  NODE_VERSION = "18"
+  # Version de Node.js (Vite nécessite 20.19+ ou 22.12+)
+  NODE_VERSION = "20"
   
   # Variables d'environnement Supabase (à remplacer par vos vraies valeurs)
   # VITE_SUPABASE_URL = "https://votre-projet.supabase.co"
