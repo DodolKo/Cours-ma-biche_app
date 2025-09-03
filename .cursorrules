@@ -3,6 +3,12 @@
 ## 📋 Contexte du projet
 Vous développez une application de running en Vue 3 avec Vite, utilisant Supabase comme backend. L'application suit une architecture de sécurité stricte en 3 niveaux pour protéger les données de santé des utilisateurs.
 
+## .env
+tu laisses le .env traquille pas besoin de refaire plusieur .env.[name] on n'utilisera uniquement le classic
+
+
+## nom des fichiers
+ne mets jamais de prefix style "basic" "secure" dans le nom des fichiers on ne touche qu'a la logique déja en PLACE 
 ## 🛠️ Stack technique
 - **Frontend**: Vue 3 + Composition API + `<script setup>`
 - **Build tool**: Vite
@@ -11,23 +17,6 @@ Vous développez une application de running en Vue 3 avec Vite, utilisant Supaba
 - **Routing**: Vue Router 4
 - **Backend**: Supabase (PostgreSQL + Auth + RLS)
 - **Package manager**: npm
-
-## 🏗️ Architecture de sécurité (CRITIQUE)
-
-### Niveau 1: Métadonnées Auth (Non-sensibles)
-- **Stockage**: `auth.users.user_metadata`
-- **Contenu**: first_name, last_name, display_name, avatar_url, preferences
-- **Accès**: Utilisateur authentifié uniquement
-
-### Niveau 2: Données de santé (Sensibles)
-- **Stockage**: Table `user_health_data` avec RLS strict
-- **Contenu**: birth_date, weight, height, gender, activity_level, medical_conditions
-- **Sécurité**: RLS + validation SQL + chiffrement de connexion
-
-### Niveau 3: Données ultra-sensibles (Chiffrées)
-- **Stockage**: Champs `encrypted_*` avec chiffrement côté client
-- **Contenu**: Notes médicales privées, données GPS précises
-- **Sécurité**: AES-256 avant envoi + RLS
 
 ## 📁 Structure des dossiers
 ```

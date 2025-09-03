@@ -2,41 +2,35 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { supabase } from '../utils/supabase'
 
+/**
+ * Store d'authentification simple
+ * Email + Password + Username seulement
+ */
 export const useAuthStore = defineStore('auth', () => {
   // État réactif
   const user = ref(null)
   const loading = ref(false)
   const error = ref(null)
 
-  // Getters
+  // Getters simples
   const isAuthenticated = computed(() => !!user.value)
   const userEmail = computed(() => user.value?.email || null)
-  const userFirstName = computed(() => user.value?.user_metadata?.first_name || '')
-  const userLastName = computed(() => user.value?.user_metadata?.last_name || '')
-  const userDisplayName = computed(() => user.value?.user_metadata?.display_name || '')
-  const userFullName = computed(() => {
-    const first = userFirstName.value
-    const last = userLastName.value
-    return `${first} ${last}`.trim() || userDisplayName.value
-  })
+  const userName = computed(() => user.value?.user_metadata?.username || user.value?.email?.split('@')[0] || '')
+  const userFullName = computed(() => user.value?.user_metadata?.full_name || userName.value)
 
-  // Actions
-  async function signUp(email, password, profileData = {}) {
+  // Actions simples
+  async function signUp(email, password, username = '') {
     loading.value = true
     error.value = null
     
     try {
-      // Utiliser les métadonnées utilisateur pour les informations de base (sécurisé)
       const { data, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
-            first_name: profileData.first_name || '',
-            last_name: profileData.last_name || '',
-            // Seules les données NON-SENSIBLES vont dans les métadonnées
-            display_name: profileData.display_name || '',
-            avatar_url: profileData.avatar_url || null
+            username: username || email.split('@')[0],
+            full_name: username || email.split('@')[0]
           }
         }
       })
@@ -47,8 +41,7 @@ export const useAuthStore = defineStore('auth', () => {
       if (data.user && !data.user.email_confirmed_at) {
         return {
           success: true,
-          message: 'Vérifiez votre email pour confirmer votre inscription',
-          needsProfileCompletion: !!profileData.first_name
+          message: 'Vérifiez votre email pour confirmer votre inscription'
         }
       }
       
@@ -124,23 +117,23 @@ export const useAuthStore = defineStore('auth', () => {
     })
   }
 
-  // Fonction pour mettre à jour les métadonnées utilisateur
-  async function updateUserMetadata(updates) {
+  // Fonction simple pour mettre à jour le nom d'utilisateur
+  async function updateUsername(newUsername) {
     loading.value = true
     error.value = null
     
     try {
       const { data, error: updateError } = await supabase.auth.updateUser({
         data: {
-          ...user.value?.user_metadata,
-          ...updates
+          username: newUsername,
+          full_name: newUsername
         }
       })
       
       if (updateError) throw updateError
       
       user.value = data.user
-      return { success: true, message: 'Profil mis à jour avec succès' }
+      return { success: true, message: 'Nom d\'utilisateur mis à jour' }
     } catch (err) {
       error.value = err.message
       return { success: false, error: err.message }
@@ -154,18 +147,16 @@ export const useAuthStore = defineStore('auth', () => {
     user,
     loading,
     error,
-    // Getters
+    // Getters simples
     isAuthenticated,
     userEmail,
-    userFirstName,
-    userLastName,
-    userDisplayName,
+    userName,
     userFullName,
-    // Actions
+    // Actions simples
     signUp,
     signIn,
     signOut,
-    updateUserMetadata,
+    updateUsername,
     initialize,
     setupAuthListener
   }

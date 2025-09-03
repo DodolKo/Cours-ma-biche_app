@@ -1,3 +1,407 @@
 @import "tailwindcss";
 
+/* Styles optimisés pour mobile-first et PWA */
 
+/* Variables CSS personnalisées - Thème santé (blanc et vert clair) */
+:root {
+  /* Couleurs principales - Thème vert santé */
+  --primary-color: #22c55e;      /* Vert principal */
+  --primary-light: #86efac;      /* Vert clair */
+  --primary-dark: #16a34a;       /* Vert foncé */
+  --secondary-color: #f0fdf4;    /* Vert très clair pour les backgrounds */
+  
+  /* Couleurs d'état */
+  --success-color: #22c55e;      /* Vert pour les succès */
+  --warning-color: #f59e0b;      /* Orange pour les avertissements */
+  --danger-color: #ef4444;       /* Rouge pour les erreurs */
+  --info-color: #3b82f6;         /* Bleu pour les informations */
+  
+  /* Échelle de gris - Optimisée pour le contraste sur fond blanc */
+  --white: #ffffff;
+  --gray-50: #f8fafc;           /* Blanc cassé très léger */
+  --gray-100: #f1f5f9;          /* Gris très clair */
+  --gray-200: #e2e8f0;          /* Gris clair pour les bordures */
+  --gray-300: #cbd5e1;          /* Gris moyen clair */
+  --gray-400: #94a3b8;          /* Gris moyen */
+  --gray-500: #64748b;          /* Gris neutre */
+  --gray-600: #475569;          /* Gris foncé */
+  --gray-700: #334155;          /* Gris très foncé */
+  --gray-800: #1e293b;          /* Presque noir */
+  --gray-900: #0f172a;          /* Noir */
+  
+  /* Couleurs spécifiques aux phases d'entraînement */
+  --phase-warmup: #fbbf24;      /* Jaune doré pour l'échauffement */
+  --phase-run: #22c55e;         /* Vert pour la course */
+  --phase-walk: #86efac;        /* Vert clair pour la marche */
+  --phase-rest: #94a3b8;        /* Gris pour le repos */
+  --phase-stretch: #a78bfa;     /* Violet clair pour les étirements */
+}
+
+/* Reset et base */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  /* Empêcher le zoom sur iOS */
+  -webkit-text-size-adjust: 100%;
+  /* Améliorer le rendu des polices */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  line-height: 1.6;
+  color: var(--gray-800);
+  background: linear-gradient(135deg, var(--white) 0%, var(--secondary-color) 100%);
+  /* Empêcher le scroll horizontal */
+  overflow-x: hidden;
+  /* Assurer une hauteur minimale pour le gradient */
+  min-height: 100vh;
+}
+
+/* Optimisations pour les appareils tactiles */
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+button {
+  /* Améliorer la réactivité tactile */
+  touch-action: manipulation;
+  /* Supprimer le délai de double-tap sur iOS */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Styles pour les éléments interactifs */
+.interactive {
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.interactive:hover {
+  transform: translateY(-1px);
+}
+
+.interactive:active {
+  transform: translateY(0);
+}
+
+/* Styles pour le chronomètre - Thème vert santé */
+.timer-circle {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  box-shadow: 
+    0 20px 25px -5px rgba(34, 197, 94, 0.15),
+    0 10px 10px -5px rgba(34, 197, 94, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  /* Ajouter une bordure subtile pour plus de définition */
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Animation pour le bouton de contrôle */
+.control-button {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.control-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.control-button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* Styles pour les cartes */
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Styles pour les barres de progression - Thème vert santé */
+.progress-bar {
+  background: linear-gradient(90deg, var(--primary-light) 0%, var(--primary-color) 100%);
+  transition: width 0.3s ease-in-out;
+  border-radius: 4px;
+}
+
+/* Styles pour les phases d'entraînement - Couleurs cohérentes avec le thème */
+.phase-warmup {
+  border-left-color: var(--phase-warmup);
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+}
+
+.phase-run {
+  border-left-color: var(--phase-run);
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+}
+
+.phase-walk {
+  border-left-color: var(--phase-walk);
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+}
+
+.phase-rest {
+  border-left-color: var(--phase-rest);
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.phase-stretch {
+  border-left-color: var(--phase-stretch);
+  background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+  /* Optimisations pour les petits écrans */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Ajuster la taille des boutons pour les doigts */
+  button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Optimiser l'espacement */
+  .space-y-4 > * + * {
+    margin-top: 1rem;
+  }
+}
+
+/* Styles pour le mode sombre (optionnel) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --gray-50: #1f2937;
+    --gray-100: #374151;
+    --gray-200: #4b5563;
+    --gray-300: #6b7280;
+    --gray-400: #9ca3af;
+    --gray-500: #d1d5db;
+    --gray-600: #e5e7eb;
+    --gray-700: #f3f4f6;
+    --gray-800: #f9fafb;
+    --gray-900: #ffffff;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Styles pour l'accessibilité */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus visible pour l'accessibilité */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Navigation Styles - Mobile First Design */
+
+/* Navigation mobile (bottom nav) */
+.mobile-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--white);
+  border-top: 1px solid var(--gray-200);
+  padding: 0.75rem 0;
+  z-index: 50;
+  box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  color: var(--gray-500);
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  border-radius: 0.5rem;
+  min-width: 60px;
+}
+
+.mobile-nav-item:hover,
+.mobile-nav-item.active {
+  color: var(--primary-color);
+  background: var(--secondary-color);
+}
+
+.mobile-nav-icon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 0.25rem;
+}
+
+.mobile-nav-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Navigation desktop (top nav) */
+.desktop-nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-200);
+  padding: 1rem 0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.desktop-nav-item {
+  padding: 0.75rem 1.5rem;
+  color: var(--gray-600);
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.desktop-nav-item:hover,
+.desktop-nav-item.active {
+  color: var(--primary-color);
+  background: var(--secondary-color);
+}
+
+/* PWA Install Prompt Styles */
+.pwa-install-prompt {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  color: var(--white);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(34, 197, 94, 0.1);
+}
+
+.pwa-install-button {
+  background: var(--white);
+  color: var(--primary-color);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.pwa-install-button:hover {
+  background: var(--gray-50);
+  transform: translateY(-1px);
+}
+
+/* Device-specific styles */
+.device-mobile .timer-container {
+  padding-bottom: 5rem; /* Espace pour la navigation mobile */
+}
+
+.device-desktop .timer-blocked,
+.device-tablet .timer-blocked {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  padding: 2rem;
+}
+
+.timer-blocked-icon {
+  width: 80px;
+  height: 80px;
+  color: var(--gray-400);
+  margin-bottom: 1rem;
+}
+
+.timer-blocked-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--gray-800);
+  margin-bottom: 0.5rem;
+}
+
+.timer-blocked-message {
+  color: var(--gray-600);
+  margin-bottom: 2rem;
+  max-width: 400px;
+}
+
+/* Styles pour les états de chargement */
+.loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
