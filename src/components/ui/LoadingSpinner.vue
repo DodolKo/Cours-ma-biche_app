@@ -32,26 +32,47 @@ const sizeClass = computed(() => {
 
 <style scoped>
 .loading-spinner {
-  @apply flex flex-col items-center justify-center p-4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
 }
 
 .spinner {
-  @apply border-4 border-gray-200 border-t-green-500 rounded-full animate-spin;
+  border: 4px solid var(--gray-200);
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
 .loading-small .spinner {
-  @apply w-6 h-6 border-2;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-width: 2px;
 }
 
 .loading-medium .spinner {
-  @apply w-8 h-8 border-4;
+  width: 2rem;
+  height: 2rem;
+  border-width: 4px;
 }
 
 .loading-large .spinner {
-  @apply w-12 h-12 border-4;
+  width: 3rem;
+  height: 3rem;
+  border-width: 4px;
 }
 
 .loading-message {
-  @apply mt-3 text-sm text-gray-600 text-center;
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  text-align: center;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>

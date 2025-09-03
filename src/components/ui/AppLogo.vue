@@ -84,22 +84,28 @@ function handleImageError() {
 
 <style scoped>
 .app-logo {
-  @apply flex items-center justify-center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .logo-small {
-  @apply w-6 h-6;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .logo-medium {
-  @apply w-8 h-8;
+  width: 2rem;
+  height: 2rem;
 }
 
 .logo-large {
-  @apply w-12 h-12;
+  width: 3rem;
+  height: 3rem;
 }
 
 .logo-xl {
-  @apply w-16 h-16;
+  width: 4rem;
+  height: 4rem;
 }
 </style>

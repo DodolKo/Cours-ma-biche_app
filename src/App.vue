@@ -34,6 +34,10 @@ onMounted(() => {
 }
 
 .app-initializing {
-  @apply min-h-screen flex items-center justify-center bg-gray-50;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--gray-50);
 }
 </style>
