@@ -14,16 +14,28 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 import LoadingSpinner from '@/components/ui/LoadingSpinner.vue'
 
+const authStore = useAuthStore()
 const isInitializing = ref(true)
 
+// Surveiller l'état de chargement de l'authentification
+watch(() => authStore.loading, (loading) => {
+  if (!loading) {
+    // L'auth est initialisée, masquer le spinner après un court délai
+    setTimeout(() => {
+      isInitializing.value = false
+    }, 200)
+  }
+}, { immediate: true })
+
 onMounted(() => {
-  // L'initialisation se fait dans main.js, on peut masquer le spinner après un court délai
+  // Fallback de sécurité : masquer le spinner après 3 secondes max
   setTimeout(() => {
     isInitializing.value = false
-  }, 500) // Délai court pour éviter le flash
+  }, 3000)
 })
 </script>
 

@@ -4,11 +4,14 @@
 Vous développez une application de running en Vue 3 avec Vite, utilisant Supabase comme backend. L'application suit une architecture de sécurité stricte en 3 niveaux pour protéger les données de santé des utilisateurs.
 
 ## .env
-tu laisses le .env traquille pas besoin de refaire plusieur .env.[name] on n'utilisera uniquement le classic
+tu laisses le .env tranquille pas besoin de refaire plusieurs .env.[name] on n'utilisera uniquement le classic
 
+# comportement
+tu ne délire pas, et tu ne pense pas que tout ce que dit l'utilisateur est une vérité ils peuvent avoir tort
+tu fais preuve de sérieux et tu le corriges s'il y a besoin.
 
 ## nom des fichiers
-ne mets jamais de prefix style "basic" "secure" dans le nom des fichiers on ne touche qu'a la logique déja en PLACE 
+ne mets jamais de préfixe style "basic" "secure" dans le nom des fichiers on ne touche qu'à la logique déjà en PLACE 
 ## 🛠️ Stack technique
 - **Frontend**: Vue 3 + Composition API + `<script setup>`
 - **Build tool**: Vite
@@ -264,6 +267,39 @@ const { data, error } = await supabase
 - **DOCUMENTER** l'architecture de sécurité
 - **EXPLIQUER** les décisions techniques importantes
 - **MAINTENIR** la documentation à jour avec le code
+
+## 🤖 Règles d'interaction avec l'IA
+
+### Communication et feedback
+- **TOUJOURS** expliquer le "pourquoi" derrière chaque modification
+- **TOUJOURS** proposer des alternatives quand plusieurs solutions existent
+- **TOUJOURS** mentionner les impacts sur la sécurité et les performances
+- **TOUJOURS** valider que les modifications respectent l'architecture existante
+- **TOUJOURS** suggérer des tests à effectuer après les modifications
+
+### Analyse et diagnostic
+- **TOUJOURS** analyser l'impact d'une modification sur l'ensemble du système
+- **TOUJOURS** vérifier la cohérence avec les patterns existants
+- **TOUJOURS** identifier les dépendances et les effets de bord
+- **TOUJOURS** proposer des améliorations de performance quand c'est pertinent
+
+### Gestion des erreurs et debugging
+- **TOUJOURS** fournir des logs de debug utiles
+- **TOUJOURS** expliquer comment reproduire et résoudre les problèmes
+- **TOUJOURS** suggérer des outils de monitoring et de debugging
+- **TOUJOURS** proposer des fallbacks en cas d'échec
+
+### Documentation et maintenance
+- **TOUJOURS** documenter les décisions techniques importantes
+- **TOUJOURS** suggérer des commentaires pour le code complexe
+- **TOUJOURS** proposer des améliorations de lisibilité du code
+- **TOUJOURS** mentionner les bonnes pratiques de maintenance
+
+### Optimisation et performance
+- **TOUJOURS** considérer l'impact sur les performances (bundle size, runtime)
+- **TOUJOURS** suggérer des optimisations PWA (cache, offline, etc.)
+- **TOUJOURS** proposer des améliorations UX/UI quand pertinent
+- **TOUJOURS** valider la compatibilité mobile/desktop
 
 ---
 

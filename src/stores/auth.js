@@ -98,6 +98,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   // Initialiser l'état utilisateur au démarrage
   async function initialize() {
+    loading.value = true // ✅ Marquer comme en cours de chargement
+    
     try {
       // Récupérer la session actuelle (inclut le token de rafraîchissement)
       const { data: { session }, error } = await supabase.auth.getSession()
@@ -116,6 +118,8 @@ export const useAuthStore = defineStore('auth', () => {
       }
     } catch (err) {
       console.error('Erreur lors de l\'initialisation de l\'auth:', err)
+    } finally {
+      loading.value = false // ✅ Marquer comme terminé
     }
   }
 

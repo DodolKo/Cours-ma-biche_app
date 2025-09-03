@@ -94,10 +94,14 @@ router.beforeEach(async (to, from, next) => {
     document.title = to.meta.title
   }
   
-  // Attendre que l'authentification soit initialisée si nécessaire
+  // Attendre que l'authentification soit complètement initialisée
   if (authStore.loading) {
-    // Attendre un court délai pour que l'auth se stabilise
-    await new Promise(resolve => setTimeout(resolve, 100))
+    console.log('⏳ Attente de l\'initialisation de l\'authentification...')
+    // Attendre que l'auth soit complètement initialisée
+    while (authStore.loading) {
+      await new Promise(resolve => setTimeout(resolve, 50))
+    }
+    console.log('✅ Authentification initialisée, navigation autorisée')
   }
   
   // Vérification de l'authentification
