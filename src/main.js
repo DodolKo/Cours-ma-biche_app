@@ -14,9 +14,24 @@ const pinia = createPinia()
 app.use(pinia)
 app.use(router)
 
-// Initialiser l'authentification après le montage de Pinia
+// Initialiser l'authentification AVANT le montage de l'app
 const authStore = useAuthStore()
-authStore.initialize()
-authStore.setupAuthListener()
 
-app.mount('#app')
+// Initialiser l'auth de manière asynchrone et monter l'app une fois terminé
+async function initializeApp() {
+  try {
+    // Initialiser l'authentification
+    await authStore.initialize()
+    authStore.setupAuthListener()
+    
+    // Monter l'application une fois l'auth initialisée
+    app.mount('#app')
+  } catch (error) {
+    console.error('Erreur lors de l\'initialisation:', error)
+    // Monter quand même l'app en cas d'erreur
+    app.mount('#app')
+  }
+}
+
+// Lancer l'initialisation
+initializeApp()

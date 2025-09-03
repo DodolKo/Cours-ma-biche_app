@@ -99,8 +99,21 @@ export const useAuthStore = defineStore('auth', () => {
   // Initialiser l'état utilisateur au démarrage
   async function initialize() {
     try {
-      const { data: { user: currentUser } } = await supabase.auth.getUser()
-      user.value = currentUser
+      // Récupérer la session actuelle (inclut le token de rafraîchissement)
+      const { data: { session }, error } = await supabase.auth.getSession()
+      
+      if (error) {
+        console.error('Erreur lors de la récupération de la session:', error)
+        return
+      }
+      
+      // Définir l'utilisateur si une session existe
+      if (session?.user) {
+        user.value = session.user
+        console.log('✅ Session utilisateur restaurée:', session.user.email)
+      } else {
+        console.log('ℹ️ Aucune session active trouvée')
+      }
     } catch (err) {
       console.error('Erreur lors de l\'initialisation de l\'auth:', err)
     }
@@ -109,10 +122,18 @@ export const useAuthStore = defineStore('auth', () => {
   // Écouter les changements d'état d'authentification
   function setupAuthListener() {
     supabase.auth.onAuthStateChange((event, session) => {
+      console.log('🔄 Événement d\'authentification:', event, session?.user?.email || 'Aucun utilisateur')
+      
       user.value = session?.user || null
       
-      if (event === 'SIGNED_OUT') {
+      if (event === 'SIGNED_IN') {
+        console.log('✅ Utilisateur connecté:', session.user.email)
         error.value = null
+      } else if (event === 'SIGNED_OUT') {
+        console.log('👋 Utilisateur déconnecté')
+        error.value = null
+      } else if (event === 'TOKEN_REFRESHED') {
+        console.log('🔄 Token rafraîchi pour:', session.user.email)
       }
     })
   }

@@ -3,7 +3,7 @@
     <div class="install-card">
       <!-- Icône de l'app -->
       <div class="app-icon">
-        <img src="/logo-192.png" alt="Running App" class="w-12 h-12" />
+        <AppLogo size="large" />
       </div>
       
       <!-- Contenu -->
@@ -54,6 +54,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import AppLogo from '@/components/ui/AppLogo.vue'
 
 // État réactif
 const showInstallPrompt = ref(false)

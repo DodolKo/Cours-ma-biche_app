@@ -86,12 +86,18 @@ const router = createRouter({
 /**
  * Garde de navigation globale - Gestion de l'authentification et des restrictions d'appareil
  */
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
   
   // Mise à jour du titre de la page
   if (to.meta.title) {
     document.title = to.meta.title
+  }
+  
+  // Attendre que l'authentification soit initialisée si nécessaire
+  if (authStore.loading) {
+    // Attendre un court délai pour que l'auth se stabilise
+    await new Promise(resolve => setTimeout(resolve, 100))
   }
   
   // Vérification de l'authentification

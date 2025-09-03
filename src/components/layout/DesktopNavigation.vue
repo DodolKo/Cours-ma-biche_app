@@ -10,23 +10,8 @@
         <!-- Logo/Titre de l'application -->
         <div class="flex items-center space-x-4">
           <div class="flex items-center space-x-2">
-            <!-- Icône de l'app -->
-            <div class="w-8 h-8 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center">
-              <svg 
-                class="w-5 h-5 text-white" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path 
-                  stroke-linecap="round" 
-                  stroke-linejoin="round" 
-                  stroke-width="2" 
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
-            </div>
+            <!-- Logo de l'app -->
+            <AppLogo size="medium" force-web />
             
             <!-- Titre -->
             <h1 class="text-xl font-bold text-gray-800">
@@ -145,6 +130,7 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import AppLogo from '@/components/ui/AppLogo.vue'
 
 // Stores et router
 const router = useRouter()
