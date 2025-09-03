@@ -4,10 +4,14 @@
     <!-- App branding header -->
     <div class="app-branding">
       <div class="app-icon">
-        <AppLogo size="large" />
+        <div class="icon-circle">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+        </div>
       </div>
-      <h1 class="app-title">Running App</h1>
-      <p class="app-tagline">Votre coach personnel de course à pied</p>
+      <h1 class="app-title">Cours ma Biche !</h1>
+      <p class="app-tagline">Votre coach Carolo de course à pied</p>
     </div>
 
     <!-- Login card -->
@@ -126,7 +130,6 @@
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import AppLogo from '@/components/ui/AppLogo.vue'
 
 // Router et store
 const router = useRouter()
