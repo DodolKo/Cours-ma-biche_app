@@ -9,6 +9,11 @@
   # Version de Node.js (Vite nécessite 20.19+ ou 22.12+)
   NODE_VERSION = "20"
   
+  # Configuration du scanner de secrets
+  SECRETS_SCAN_ENABLED = "true"
+  SECRETS_SCAN_OMIT_PATHS = "src/**,*.vue,*.js,*.css"
+  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_URL,VITE_SUPABASE_ANON_KEY"
+  
   # Variables d'environnement Supabase (à remplacer par vos vraies valeurs)
   # VITE_SUPABASE_URL = "https://votre-projet.supabase.co"
   # VITE_SUPABASE_ANON_KEY = "votre_clé_anonyme"
