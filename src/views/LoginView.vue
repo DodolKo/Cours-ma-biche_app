@@ -238,7 +238,7 @@ async function handleSubmit() {
   pointer-events: none;
 }
 
-/* App Branding - Like timer interface */
+/* App Branding - Like program interface */
 .app-branding {
   text-align: center;
   z-index: 1;
@@ -461,7 +461,7 @@ async function handleSubmit() {
   margin: 0;
 }
 
-/* Submit Button - Like timer start button */
+/* Submit Button - Like program start button */
 .submit-button {
   width: 100%;
   padding: 1rem 1.25rem;
@@ -627,7 +627,82 @@ async function handleSubmit() {
   outline-offset: 2px;
 }
 
-/* Dark mode support (future) */
+/* Dark mode support */
+.dark .login-container {
+  background: linear-gradient(135deg, var(--gray-900) 0%, var(--gray-800) 100%);
+}
+
+.dark .login-card {
+  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(34, 197, 94, 0.2);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.dark .mode-pill {
+  background: var(--gray-700);
+  color: var(--gray-300);
+}
+
+.dark .mode-pill.active {
+  background: var(--primary-color);
+  color: var(--gray-900);
+}
+
+.dark .form-input {
+  background: var(--gray-700);
+  border-color: var(--gray-600);
+  color: var(--gray-100);
+}
+
+.dark .form-input:focus {
+  background: var(--gray-600);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+.dark .form-label {
+  color: var(--gray-200);
+}
+
+.dark .password-toggle {
+  color: var(--gray-400);
+}
+
+.dark .password-toggle:hover {
+  color: var(--gray-200);
+}
+
+.dark .form-help {
+  color: var(--gray-400);
+}
+
+.dark .error-message {
+  background-color: rgba(220, 38, 38, 0.1);
+  border-color: rgba(220, 38, 38, 0.2);
+}
+
+.dark .success-message {
+  background-color: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.2);
+}
+
+/* Assurer que tous les textes sont visibles en mode sombre */
+.dark .app-title,
+.dark .app-tagline,
+.dark .form-label,
+.dark .form-help,
+.dark .error-message p,
+.dark .success-message p {
+  color: #ffffff !important;
+}
+
+.dark .form-input::placeholder {
+  color: var(--gray-400) !important;
+}
+
+/* Fallback pour les préférences système */
 @media (prefers-color-scheme: dark) {
   .login-container {
     background: linear-gradient(135deg, #1f2937 0%, #111827 100%);

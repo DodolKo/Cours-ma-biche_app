@@ -1,12 +1,36 @@
 <template>
   <!-- Dashboard View - Design moderne avec navigation responsive -->
   <AppLayout>
-    <!-- Contenu principal - Timer avec statistiques intégrées -->
-    <div class="dashboard-content">
+    <!-- Contenu principal - Programme avec statistiques intégrées -->
+    <div class="dashboard-content page-content">
       
-      <!-- Timer Component - Centre de l'expérience -->
+      <!-- Program Component - Centre de l'expérience -->
       <div class="timer-section">
+        <!-- Affichage conditionnel basé sur la disponibilité du programme -->
+        <div v-if="!trainingStore.currentProgramData" class="no-program-state">
+          <div class="text-center py-12">
+            <div class="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              Aucun programme chargé
+            </h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-6">
+              Chargez un programme d'entraînement pour commencer
+            </p>
+            <button 
+              @click="loadDefaultProgram"
+              class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+            >
+              Charger un programme par défaut
+            </button>
+          </div>
+        </div>
+        
         <Timer
+          v-else
           :program="trainingStore.currentProgramData"
           :current-week="trainingStore.currentWeek"
           :current-day="trainingStore.currentDay"
@@ -20,10 +44,13 @@
         v-if="isMobile"
         class="stats-section mt-8 max-w-md mx-auto px-4"
       >
-        <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-sm p-6 border border-green-100">
-          <h3 class="text-lg font-bold text-gray-800 mb-4 text-center">
-            Vos progrès
-          </h3>
+        <Panel 
+          variant="secondary" 
+          size="medium" 
+          title="Vos progrès" 
+          glass
+          class="text-center"
+        >
           
           <div class="grid grid-cols-3 gap-6 text-center">
             <!-- Séances complétées -->
@@ -33,10 +60,10 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
                 </svg>
               </div>
-              <div class="text-2xl font-bold text-gray-800 mb-1">
+              <div class="text-2xl font-bold text-black dark:text-white mb-1">
                 {{ trainingStats.completedSessions }}
               </div>
-              <div class="text-xs text-gray-500 font-medium">
+              <div class="text-xs text-black dark:text-white font-medium">
                 Séances
               </div>
             </div>
@@ -48,10 +75,10 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
               </div>
-              <div class="text-2xl font-bold text-gray-800 mb-1">
+              <div class="text-2xl font-bold text-black dark:text-white mb-1">
                 {{ formatTime(trainingStats.totalTime) }}
               </div>
-              <div class="text-xs text-gray-500 font-medium">
+              <div class="text-xs text-black dark:text-white font-medium">
                 Temps total
               </div>
             </div>
@@ -63,15 +90,15 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                 </svg>
               </div>
-              <div class="text-2xl font-bold text-gray-800 mb-1">
+              <div class="text-2xl font-bold text-black dark:text-white mb-1">
                 {{ trainingStats.currentStreak }}
               </div>
-              <div class="text-xs text-gray-500 font-medium">
+              <div class="text-xs text-black dark:text-white font-medium">
                 Série
               </div>
             </div>
           </div>
-        </div>
+        </Panel>
       </div>
 
       <!-- Message de motivation -->
@@ -96,6 +123,7 @@ import { useAuthStore } from '@/stores/auth'
 import { useTrainingStore } from '@/stores/training'
 import Timer from '@/components/Timer.vue'
 import AppLayout from '@/components/layout/AppLayout.vue'
+import Panel from '@/components/ui/Panel.vue'
 import { isMobile } from '@/utils/deviceDetection'
 
 // Stores et router
@@ -149,7 +177,6 @@ function handleSessionCompleted() {
   trainingStore.completeTraining()
   
   // Afficher une notification de succès
-  // TODO: Implémenter un système de notifications toast
   console.log('Session d\'entraînement terminée avec succès!')
   
   // Optionnel: Vibration sur mobile si supportée
@@ -158,9 +185,47 @@ function handleSessionCompleted() {
   }
 }
 
+// Méthodes
+const loadDefaultProgram = async () => {
+  // Charger les programmes disponibles
+  await trainingStore.loadPrograms()
+  
+  // Si aucun programme n'est disponible, créer un programme par défaut
+  if (trainingStore.availablePrograms.length === 0) {
+    const defaultProgram = {
+      id: 'default-beginner',
+      name: 'Débuter la course - 4 semaines',
+      description: 'Programme progressif pour débuter la course à pied',
+      total_weeks: 4,
+      phases: {
+        week_1: {
+          day_1: [
+            { type: 'warmup', duration: 5, description: 'Échauffement léger' },
+            { type: 'walk', duration: 10, description: 'Marche modérée' },
+            { type: 'stretch', duration: 5, description: 'Étirements' }
+          ]
+        }
+      }
+    }
+    
+    // Ajouter le programme par défaut
+    trainingStore.availablePrograms.push(defaultProgram)
+  }
+  
+  // Démarrer le premier programme disponible
+  if (trainingStore.availablePrograms.length > 0) {
+    await trainingStore.startProgram(trainingStore.availablePrograms[0].id)
+  }
+}
+
 // Lifecycle
-onMounted(() => {
-  trainingStore.initializeTraining()
+onMounted(async () => {
+  await trainingStore.initializeTraining()
+  
+  // Si aucun programme n'est chargé, essayer de charger un programme par défaut
+  if (!trainingStore.currentProgramData) {
+    await loadDefaultProgram()
+  }
 })
 </script>
 
@@ -171,7 +236,7 @@ onMounted(() => {
   padding: 1rem 0;
 }
 
-/* Timer Section */
+/* Program Section */
 .timer-section {
   margin-bottom: 2rem;
 }

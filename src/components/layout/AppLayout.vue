@@ -4,19 +4,30 @@
     class="app-layout min-h-screen"
     :class="deviceClasses"
   >
+    <!-- Header mobile (visible uniquement sur mobile) -->
+    <MobileHeader v-if="isMobile" />
+    
     <!-- Navigation desktop (visible uniquement sur desktop) -->
     <DesktopNavigation v-if="isDesktop" />
     
-    <!-- Contenu principal -->
+    <!-- Contenu principal avec transitions -->
     <main 
       class="main-content flex-1"
       :class="{
-        'pb-20': isMobile, // Espace pour la navigation mobile
+        'pb-20 pt-16': isMobile, // Espace pour la navigation mobile + header mobile
         'pt-0': isDesktop   // Pas d'espace supplémentaire sur desktop
       }"
     >
-      <!-- Slot pour le contenu des pages -->
-      <slot />
+      <!-- Conteneur pour les transitions de pages -->
+      <div id="page-transition-wrapper">
+        <Transition 
+          name="page-transition" 
+          mode="out-in"
+        >
+          <!-- Slot pour le contenu des pages -->
+          <slot />
+        </Transition>
+      </div>
     </main>
     
     <!-- Navigation mobile (visible uniquement sur mobile) -->
@@ -29,6 +40,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import MobileHeader from './MobileHeader.vue'
 import MobileNavigation from './MobileNavigation.vue'
 import DesktopNavigation from './DesktopNavigation.vue'
 import PWAInstallPrompt from '../PWAInstallPrompt.vue'
@@ -38,6 +50,8 @@ import { getDeviceType, getDeviceClasses, isMobile as checkIsMobile, isDesktop a
 const deviceType = ref('mobile')
 const isMobile = ref(true)
 const isDesktop = ref(false)
+
+// Les transitions sont gérées par Vue Router
 
 // Classes CSS dynamiques basées sur le type d'appareil
 const deviceClasses = computed(() => {
@@ -125,5 +139,11 @@ onUnmounted(() => {
   .device-mobile .main-content {
     padding-bottom: max(5rem, env(safe-area-inset-bottom, 0));
   }
+}
+
+/* Styles pour les transitions de pages */
+#page-transition-wrapper {
+  width: 100%;
+  height: 100%;
 }
 </style>

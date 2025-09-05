@@ -16,9 +16,11 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { useThemeStore } from '@/stores/theme'
 import LoadingSpinner from '@/components/ui/LoadingSpinner.vue'
 
 const authStore = useAuthStore()
+const themeStore = useThemeStore()
 const isInitializing = ref(true)
 
 // Surveiller l'état de chargement de l'authentification
@@ -32,6 +34,9 @@ watch(() => authStore.loading, (loading) => {
 }, { immediate: true })
 
 onMounted(() => {
+  // Initialiser le système de thème
+  themeStore.initializeTheme()
+  
   // Fallback de sécurité : masquer le spinner après 3 secondes max
   setTimeout(() => {
     isInitializing.value = false

@@ -65,6 +65,16 @@ const routes = [
     }
   },
   {
+    path: '/program',
+    name: 'Program',
+    component: () => import('@/views/ProgramView.vue'),
+    meta: {
+      requiresAuth: false, // Temporairement sans auth pour tester
+      title: 'Programmes - Running App',
+      mobileOnly: true // Accessible uniquement sur mobile
+    }
+  },
+  {
     path: '/mobile-only',
     name: 'MobileOnly',
     component: MobileOnlyView,

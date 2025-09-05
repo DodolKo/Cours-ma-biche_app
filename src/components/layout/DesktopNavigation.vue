@@ -14,7 +14,7 @@
             <AppLogo size="medium" force-web />
             
             <!-- Titre -->
-            <h1 class="text-xl font-bold text-gray-800">
+            <h1 class="text-xl font-bold text-gray-800 dark:text-gray-100">
               Running App
             </h1>
           </div>
@@ -22,11 +22,32 @@
 
         <!-- Navigation principale -->
         <div class="flex items-center space-x-1">
-          <!-- Chronomètre masqué sur desktop/tablette - visible uniquement sur mobile -->
+          <!-- Programme/Program -->
+          <RouterLink
+            to="/program"
+            class="desktop-nav-item"
+            :class="{ active: $route.name === 'Program' }"
+          >
+            <svg 
+              class="w-5 h-5 mr-2 inline" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path 
+                stroke-linecap="round" 
+                stroke-linejoin="round" 
+                stroke-width="2" 
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            Programme
+          </RouterLink>
 
           <RouterLink
             to="/stats"
-            class="desktop-nav-item"
+            class="desktop-nav-item stats-link"
             :class="{ active: $route.name === 'Stats' }"
           >
             <svg 
@@ -48,7 +69,7 @@
 
           <RouterLink
             to="/profile"
-            class="desktop-nav-item"
+            class="desktop-nav-item profile-link"
             :class="{ active: $route.name === 'Profile' }"
           >
             <svg 
@@ -93,8 +114,11 @@
 
         <!-- Actions utilisateur -->
         <div class="flex items-center space-x-4">
+          <!-- Toggle de thème -->
+          <ThemeToggle />
+          
           <!-- Nom de l'utilisateur -->
-          <span class="text-sm text-gray-600 hidden md:block">
+          <span class="text-sm text-gray-600 dark:text-gray-300 hidden md:block">
             {{ userDisplayName }}
           </span>
           
@@ -131,6 +155,7 @@ import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import AppLogo from '@/components/ui/AppLogo.vue'
+import ThemeToggle from '@/components/ui/ThemeToggle.vue'
 
 // Stores et router
 const router = useRouter()
@@ -147,7 +172,7 @@ const userDisplayName = computed(() => {
  */
 async function handleLogout() {
   try {
-    await authStore.logout()
+    await authStore.signOut()
     router.push('/login')
   } catch (error) {
     console.error('Erreur de déconnexion:', error)
@@ -167,4 +192,24 @@ async function handleLogout() {
   - .desktop-nav-item : éléments de navigation
   - .active : état actif
 */
+
+/* Force le contraste pour tous les textes en mode sombre */
+.dark h1,
+.dark .desktop-nav-item,
+.dark span {
+  color: #ffffff !important;
+}
+
+/* Force le contraste pour les boutons en mode sombre */
+.dark button {
+  color: #ffffff !important;
+}
+
+/* Surcharger les classes Tailwind en mode sombre */
+.dark .text-gray-800,
+.dark .text-gray-600,
+.dark .text-gray-500,
+.dark .text-gray-300 {
+  color: #ffffff !important;
+}
 </style>

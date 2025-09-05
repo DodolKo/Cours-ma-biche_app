@@ -6,12 +6,12 @@
     aria-label="Navigation principale mobile"
   >
     <div class="flex justify-around items-center px-2">
-      <!-- Chronomètre/Timer -->
+      <!-- Programme/Program -->
       <RouterLink
-        to="/dashboard"
+        to="/program"
         class="mobile-nav-item"
-        :class="{ active: $route.name === 'Dashboard' }"
-        aria-label="Chronomètre"
+        :class="{ active: $route.name === 'Program' }"
+        aria-label="Programme"
       >
         <svg 
           class="mobile-nav-icon" 
@@ -27,13 +27,13 @@
             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
           />
         </svg>
-        <span class="mobile-nav-label">Timer</span>
+        <span class="mobile-nav-label">Programme</span>
       </RouterLink>
 
       <!-- Historique/Stats -->
       <RouterLink
         to="/stats"
-        class="mobile-nav-item"
+        class="mobile-nav-item stats-link"
         :class="{ active: $route.name === 'Stats' }"
         aria-label="Statistiques"
       >
@@ -57,7 +57,7 @@
       <!-- Profil/Santé -->
       <RouterLink
         to="/profile"
-        class="mobile-nav-item"
+        class="mobile-nav-item profile-link"
         :class="{ active: $route.name === 'Profile' }"
         aria-label="Profil"
       >
@@ -123,4 +123,17 @@
   - .mobile-nav-label : libellés
   - .active : état actif
 */
+
+/* Force le contraste pour tous les textes en mode sombre */
+.dark .mobile-nav-label,
+.dark .mobile-nav-item {
+  color: #ffffff !important;
+}
+
+/* Surcharger les classes Tailwind en mode sombre */
+.dark .text-gray-500,
+.dark .text-gray-600,
+.dark .text-gray-700 {
+  color: #ffffff !important;
+}
 </style>

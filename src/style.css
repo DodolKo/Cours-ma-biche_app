@@ -5,13 +5,13 @@
 /* Variables CSS personnalisées - Thème santé (blanc et vert clair) */
 :root {
   /* Couleurs principales - Thème vert santé */
-  --primary-color: #22c55e;      /* Vert principal */
-  --primary-light: #86efac;      /* Vert clair */
-  --primary-dark: #16a34a;       /* Vert foncé */
+  --primary-color: #92F035;      /* Vert principal - Nouvelle couleur client */
+  --primary-light: #B8F573;      /* Vert clair - Version plus claire de #92F035 */
+  --primary-dark: #7AE01A;       /* Vert foncé - Version plus foncée de #92F035 */
   --secondary-color: #f0fdf4;    /* Vert très clair pour les backgrounds */
   
   /* Couleurs d'état */
-  --success-color: #22c55e;      /* Vert pour les succès */
+  --success-color: #92F035;      /* Vert pour les succès - Nouvelle couleur */
   --warning-color: #f59e0b;      /* Orange pour les avertissements */
   --danger-color: #ef4444;       /* Rouge pour les erreurs */
   --info-color: #3b82f6;         /* Bleu pour les informations */
@@ -31,8 +31,8 @@
   
   /* Couleurs spécifiques aux phases d'entraînement */
   --phase-warmup: #fbbf24;      /* Jaune doré pour l'échauffement */
-  --phase-run: #22c55e;         /* Vert pour la course */
-  --phase-walk: #86efac;        /* Vert clair pour la marche */
+  --phase-run: #92F035;         /* Vert pour la course - Nouvelle couleur */
+  --phase-walk: #B8F573;        /* Vert clair pour la marche - Nouvelle couleur */
   --phase-rest: #94a3b8;        /* Gris pour le repos */
   --phase-stretch: #a78bfa;     /* Violet clair pour les étirements */
 }
@@ -79,6 +79,241 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Classes utilitaires pour le contraste et la lisibilité - FORCÉ */
+.text-contrast {
+  color: #000000 !important; /* Noir pur FORCÉ pour le mode light */
+}
+
+.text-contrast-secondary {
+  color: #374151 !important; /* Gris foncé FORCÉ pour le mode light */
+}
+
+.text-contrast-muted {
+  color: #6b7280 !important; /* Gris moyen FORCÉ pour le mode light */
+}
+
+.dark .text-contrast {
+  color: #ffffff !important; /* Blanc pur FORCÉ pour le mode sombre */
+}
+
+.dark .text-contrast-secondary {
+  color: #d1d5db !important; /* Gris clair FORCÉ pour le mode sombre */
+}
+
+.dark .text-contrast-muted {
+  color: #9ca3af !important; /* Gris moyen clair FORCÉ pour le mode sombre */
+}
+
+/* Force le noir sur tous les textes en mode light */
+body:not(.dark) h1,
+body:not(.dark) h2,
+body:not(.dark) h3,
+body:not(.dark) h4,
+body:not(.dark) h5,
+body:not(.dark) h6,
+body:not(.dark) p,
+body:not(.dark) span,
+body:not(.dark) div,
+body:not(.dark) a,
+body:not(.dark) button,
+body:not(.dark) label,
+body:not(.dark) input,
+body:not(.dark) textarea,
+body:not(.dark) select {
+  color: #000000 !important;
+}
+
+/* Force le blanc sur tous les textes en mode sombre - RENFORCÉ */
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6,
+.dark p,
+.dark span,
+.dark div,
+.dark a,
+.dark button,
+.dark label,
+.dark input,
+.dark textarea,
+.dark select,
+.dark li,
+.dark td,
+.dark th,
+.dark strong,
+.dark em,
+.dark small,
+.dark code,
+.dark pre {
+  color: #ffffff !important;
+}
+
+/* Surcharger toutes les classes Tailwind en mode sombre */
+.dark .text-black,
+.dark .text-gray-900,
+.dark .text-gray-800,
+.dark .text-gray-700,
+.dark .text-gray-600,
+.dark .text-gray-500,
+.dark .text-gray-400,
+.dark .text-gray-300,
+.dark .text-gray-200,
+.dark .text-gray-100 {
+  color: #ffffff !important;
+}
+
+/* Force le blanc sur TOUS les éléments en mode sombre - ULTRA RENFORCÉ */
+.dark * {
+  color: #ffffff !important;
+}
+
+/* Exceptions pour les éléments qui doivent garder leur couleur */
+.dark .text-primary-color,
+.dark .text-primary-light,
+.dark .text-primary-dark,
+.dark .text-success-color,
+.dark .text-warning-color,
+.dark .text-danger-color,
+.dark .text-info-color {
+  color: inherit !important;
+}
+
+/* Assurer que les backgrounds restent sombres */
+.dark .bg-white,
+.dark .bg-gray-50,
+.dark .bg-gray-100,
+.dark .bg-gray-200,
+.dark .bg-gray-300 {
+  background-color: var(--gray-800) !important;
+}
+
+/* Force le blanc sur tous les textes des badges et cartes en mode sombre */
+.dark .stats-item,
+.dark .stats-item *,
+.dark .p-4,
+.dark .p-4 *,
+.dark .bg-green-50,
+.dark .bg-blue-50,
+.dark .bg-purple-50,
+.dark .bg-orange-50,
+.dark .bg-green-900\/20,
+.dark .bg-blue-900\/20,
+.dark .bg-purple-900\/20,
+.dark .bg-orange-900\/20 {
+  color: #ffffff !important;
+}
+
+/* Surcharger les classes de couleur spécifiques des badges */
+.dark .text-green-800,
+.dark .text-green-600,
+.dark .text-blue-800,
+.dark .text-blue-600,
+.dark .text-purple-800,
+.dark .text-purple-600,
+.dark .text-orange-800,
+.dark .text-orange-600,
+.dark .text-green-300,
+.dark .text-green-400,
+.dark .text-blue-300,
+.dark .text-blue-400,
+.dark .text-purple-300,
+.dark .text-purple-400,
+.dark .text-orange-300,
+.dark .text-orange-400 {
+  color: #ffffff !important;
+}
+
+/* Force le blanc sur tous les textes de navigation mobile en mode sombre */
+.dark .mobile-nav-label,
+.dark .mobile-nav-item,
+.dark .mobile-nav-item * {
+  color: #ffffff !important;
+}
+
+/* Force le blanc sur tous les textes du timer en mode sombre */
+.dark .phase-name,
+.dark .phase-duration,
+.dark .toggle-upcoming,
+.dark .upcoming-item,
+.dark .upcoming-item *,
+.dark .progress-card,
+.dark .progress-card * {
+  color: #ffffff !important;
+}
+
+/* Assurer que les backgrounds des cartes sont sombres en mode sombre */
+.dark .progress-card,
+.dark .upcoming-item {
+  background: rgba(30, 41, 59, 0.9) !important;
+}
+
+.dark .upcoming-item:hover {
+  background: rgba(30, 41, 59, 1) !important;
+}
+
+/* Assurer que les inputs et boutons ont un contraste correct en mode sombre */
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: var(--gray-700) !important;
+  border-color: var(--gray-600) !important;
+  color: #ffffff !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: var(--gray-400) !important;
+}
+
+/* Couleurs primaires pour les textes */
+.text-primary-color {
+  color: var(--primary-color);
+}
+
+.text-primary-light {
+  color: var(--primary-light);
+}
+
+.text-primary-dark {
+  color: var(--primary-dark);
+}
+
+/* Backgrounds avec contraste adaptatif */
+.bg-surface {
+  background-color: var(--white);
+  border: 1px solid var(--gray-200);
+}
+
+.bg-surface-elevated {
+  background-color: var(--white);
+  border: 1px solid var(--gray-200);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.bg-surface-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .bg-surface {
+  background-color: var(--gray-800);
+  border-color: var(--gray-700);
+}
+
+.dark .bg-surface-elevated {
+  background-color: var(--gray-800);
+  border-color: var(--gray-700);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+.dark .bg-surface-glass {
+  background: rgba(30, 41, 59, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 /* Styles pour les éléments interactifs */
 .interactive {
   transition: all 0.2s ease-in-out;
@@ -93,7 +328,7 @@ button {
   transform: translateY(0);
 }
 
-/* Styles pour le chronomètre - Thème vert santé */
+/* Styles pour le programme - Thème vert santé */
 .timer-circle {
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
   box-shadow: 
@@ -165,38 +400,218 @@ button {
   background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
 }
 
-/* Responsive design */
-@media (max-width: 640px) {
-  /* Optimisations pour les petits écrans */
+/* Responsive design amélioré */
+
+/* Mobile portrait - 320px à 480px */
+@media (max-width: 480px) {
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  
+  /* Taille de police plus petite sur très petits écrans */
+  html {
+    font-size: 14px;
+  }
+  
+  /* Réduire l'espacement vertical */
+  .space-y-6 > * + * {
+    margin-top: 1rem;
+  }
+  
+  .space-y-4 > * + * {
+    margin-top: 0.75rem;
+  }
+}
+
+/* Mobile landscape - 481px à 640px */
+@media (min-width: 481px) and (max-width: 640px) {
   .container {
     padding-left: 1rem;
     padding-right: 1rem;
   }
   
+  /* Optimiser pour paysage */
+  .grid-cols-1 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Tablette portrait - 641px à 768px */
+@media (min-width: 641px) and (max-width: 768px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  
+  /* Améliorer la densité d'information */
+  .grid-cols-1 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Tablette landscape et desktop - 769px à 1024px */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    max-width: 100%;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Desktop large - 1025px et plus */
+@media (min-width: 1025px) {
+  .container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Optimisations communes pour mobile */
+@media (max-width: 640px) {
   /* Ajuster la taille des boutons pour les doigts */
   button {
     min-height: 44px;
     min-width: 44px;
   }
   
-  /* Optimiser l'espacement */
-  .space-y-4 > * + * {
-    margin-top: 1rem;
+  /* Améliorer la lisibilité */
+  .text-xs {
+    font-size: 0.75rem;
+  }
+  
+  .text-sm {
+    font-size: 0.875rem;
+  }
+  
+  /* Optimiser les espacements */
+  .p-8 {
+    padding: 1.5rem;
+  }
+  
+  .p-6 {
+    padding: 1.25rem;
+  }
+  
+  .p-4 {
+    padding: 1rem;
+  }
+  
+  /* Améliorer les cartes sur mobile */
+  .bg-surface,
+  .bg-surface-elevated,
+  .bg-surface-glass {
+    border-radius: 0.75rem;
   }
 }
 
-/* Styles pour le mode sombre (optionnel) */
+/* Optimisations pour les écrans tactiles */
+@media (hover: none) and (pointer: coarse) {
+  /* Augmenter les zones tactiles */
+  .interactive {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Supprimer les effets hover sur tactile */
+  .interactive:hover {
+    transform: none;
+  }
+  
+  /* Améliorer les transitions tactiles */
+  .interactive:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease-out;
+  }
+  
+  /* Navigation mobile optimisée pour tactile */
+  .mobile-nav {
+    min-height: 80px;
+    padding-bottom: max(1rem, env(safe-area-inset-bottom, 0));
+  }
+  
+  .mobile-nav-item {
+    min-height: 50px;
+    padding: 0.75rem 0.5rem;
+  }
+}
+
+/* Fixes spécifiques pour certains smartphones */
+@media screen and (max-height: 600px) {
+  /* Smartphones avec écrans courts */
+  .mobile-nav {
+    min-height: 65px;
+    padding: 0.5rem 0;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  /* Très petits smartphones */
+  .mobile-nav-item {
+    min-width: 50px;
+    padding: 0.5rem 0.25rem;
+  }
+  
+  .mobile-nav-label {
+    font-size: 0.6rem;
+  }
+  
+  .mobile-nav-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Variables pour le mode sombre */
+.dark {
+  /* Couleurs principales - Adaptées pour le mode sombre */
+  --primary-color: #92F035;      /* Vert principal - Même couleur, bon contraste sur fond sombre */
+  --primary-light: #B8F573;      /* Vert clair - Version plus claire */
+  --primary-dark: #7AE01A;       /* Vert foncé - Version plus foncée */
+  --secondary-color: #2d2d2d;    /* Fond gris sombre pour les backgrounds */
+  
+  /* Couleurs d'état - Adaptées pour le mode sombre */
+  --success-color: #92F035;      /* Vert pour les succès */
+  --warning-color: #fbbf24;      /* Orange pour les avertissements */
+  --danger-color: #ef4444;       /* Rouge pour les erreurs */
+  --info-color: #60a5fa;         /* Bleu plus clair pour les informations */
+  
+  /* Échelle de gris - Thème gris sombre */
+  --white: #1a1a1a;              /* Gris très foncé au lieu de bleu */
+  --gray-50: #2d2d2d;            /* Gris foncé */
+  --gray-100: #3f3f3f;           /* Gris moyen foncé */
+  --gray-200: #525252;           /* Gris moyen */
+  --gray-300: #6b6b6b;           /* Gris moyen clair */
+  --gray-400: #8a8a8a;           /* Gris clair */
+  --gray-500: #a3a3a3;           /* Gris très clair */
+  --gray-600: #c7c7c7;           /* Gris très clair */
+  --gray-700: #e0e0e0;           /* Presque blanc */
+  --gray-800: #f0f0f0;           /* Blanc cassé */
+  --gray-900: #ffffff;           /* Blanc pur */
+  
+  /* Couleurs spécifiques aux phases d'entraînement - Mode sombre */
+  --phase-warmup: #fbbf24;      /* Jaune doré pour l'échauffement */
+  --phase-run: #92F035;         /* Vert pour la course */
+  --phase-walk: #B8F573;        /* Vert clair pour la marche */
+  --phase-rest: #64748b;        /* Gris pour le repos - plus clair en mode sombre */
+  --phase-stretch: #a78bfa;     /* Violet clair pour les étirements */
+}
+
+/* Support pour les préférences système (fallback) */
 @media (prefers-color-scheme: dark) {
   :root {
-    --gray-50: #1f2937;
-    --gray-100: #374151;
-    --gray-200: #4b5563;
-    --gray-300: #6b7280;
-    --gray-400: #9ca3af;
-    --gray-500: #d1d5db;
-    --gray-600: #e5e7eb;
-    --gray-700: #f3f4f6;
-    --gray-800: #f9fafb;
+    --gray-50: #1e293b;
+    --gray-100: #334155;
+    --gray-200: #475569;
+    --gray-300: #64748b;
+    --gray-400: #94a3b8;
+    --gray-500: #cbd5e1;
+    --gray-600: #e2e8f0;
+    --gray-700: #f1f5f9;
+    --gray-800: #f8fafc;
     --gray-900: #ffffff;
   }
 }
@@ -250,9 +665,44 @@ textarea:focus-visible {
   outline-offset: 2px;
 }
 
+/* Masquer les scrollbars pour une meilleure UX */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+
+/* Permettre le scroll mais masquer les barres de défilement */
+html, body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* Scroll fluide sur iOS */
+}
+
+/* Assurer que le contenu peut défiler sans scrollbar visible */
+.main-content,
+.panel,
+.mobile-nav,
+.desktop-nav {
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.main-content::-webkit-scrollbar,
+.panel::-webkit-scrollbar,
+.mobile-nav::-webkit-scrollbar,
+.desktop-nav::-webkit-scrollbar {
+  display: none;
+}
+
 /* Navigation Styles - Mobile First Design */
 
-/* Navigation mobile (bottom nav) */
+/* Navigation mobile (bottom nav) - Améliorée pour tous les smartphones */
 .mobile-nav {
   position: fixed;
   bottom: 0;
@@ -261,8 +711,23 @@ textarea:focus-visible {
   background: var(--white);
   border-top: 1px solid var(--gray-200);
   padding: 0.75rem 0;
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0));
   z-index: 50;
   box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  /* Support pour tous les navigateurs mobiles */
+  -webkit-backdrop-filter: blur(10px);
+  /* Assurer la visibilité sur tous les smartphones */
+  min-height: 70px;
+  /* Arrondis sur les angles supérieurs */
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+
+/* Mode sombre pour la navigation mobile */
+.dark .mobile-nav {
+  background: var(--white);
+  border-top-color: var(--gray-200);
 }
 
 .mobile-nav-item {
@@ -275,6 +740,10 @@ textarea:focus-visible {
   transition: all 0.2s ease-in-out;
   border-radius: 0.5rem;
   min-width: 60px;
+  min-height: 44px; /* Zone tactile minimum */
+  justify-content: center;
+  /* Support pour tous les navigateurs */
+  -webkit-tap-highlight-color: transparent;
 }
 
 .mobile-nav-item:hover,
@@ -316,6 +785,60 @@ textarea:focus-visible {
 .desktop-nav-item.active {
   color: var(--primary-color);
   background: var(--secondary-color);
+}
+
+/* Vue Router Transitions - Styles pour les transitions de pages */
+
+/* Transition par défaut - Fade avec slide */
+.page-transition-enter-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page-transition-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page-transition-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-transition-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+/* Animation d'entrée pour le contenu des pages */
+.page-content {
+  animation: pageFadeIn 0.6s ease-out;
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Optimisations pour mobile */
+@media (max-width: 640px) {
+  .page-transition-enter-from,
+  .page-transition-leave-to {
+    transform: translateY(15px);
+  }
+}
+
+/* Support pour les préférences de mouvement réduit */
+@media (prefers-reduced-motion: reduce) {
+  .page-transition-enter-active,
+  .page-transition-leave-active {
+    transition: opacity 0.1s ease;
+    transform: none;
+  }
 }
 
 /* PWA Install Prompt Styles */

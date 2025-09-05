@@ -106,19 +106,15 @@ graph TD
 ```javascript
 // Authentification
 const authStore = useAuthStore()
-await authStore.signUp(email, password, profileData)
+await authStore.signUp(email, password, username)
 
-// Profil utilisateur
-const profileStore = useProfileStore()
-await profileStore.upsertProfile(userId, data)
+// Thème
+const themeStore = useThemeStore()
+themeStore.setTheme('dark')
 
-// Données de santé
-const secureStore = useSecureProfileStore()
-await secureStore.updateSensitiveData(userId, healthData)
-
-// Géolocalisation
-const locationStore = useLocationStore()
-await locationStore.getCurrentPosition()
+// Entraînement
+const trainingStore = useTrainingStore()
+await trainingStore.loadPrograms()
 ```
 
 ## 🔒 Sécurité
@@ -174,40 +170,37 @@ function handleSetupComplete(data) {
 ### Accès aux Données Utilisateur
 
 ```javascript
-import { useAuthStore, useProfileStore, useSecureProfileStore } from '@/stores'
+import { useAuthStore, useThemeStore, useTrainingStore } from '@/stores'
 
 // Informations de base
 const authStore = useAuthStore()
 console.log(`Utilisateur: ${authStore.userFullName}`)
 
-// Profil complet
-const profileStore = useProfileStore()
-await profileStore.fetchProfile(authStore.user.id)
-console.log(`Unités: ${profileStore.preferredUnits}`)
+// Thème
+const themeStore = useThemeStore()
+console.log(`Thème actuel: ${themeStore.currentTheme}`)
 
-// Données de santé (si autorisées)
-const secureStore = useSecureProfileStore()
-await secureStore.fetchSensitiveData(authStore.user.id)
-console.log(`IMC: ${secureStore.bmi}`)
+// Entraînement
+const trainingStore = useTrainingStore()
+await trainingStore.loadPrograms()
+console.log(`Programmes disponibles: ${trainingStore.availablePrograms.length}`)
 ```
 
-### Géolocalisation
+### Gestion des Thèmes
 
 ```javascript
-import { useLocationStore } from '@/stores/location'
+import { useThemeStore } from '@/stores/theme'
 
-const locationStore = useLocationStore()
+const themeStore = useThemeStore()
 
-// Obtenir la position
-const result = await locationStore.getCurrentPosition()
-if (result.success) {
-  console.log('Position:', result.location)
-}
+// Changer de thème
+themeStore.setTheme('dark')
 
-// Suivi en temps réel
-await locationStore.startLocationTracking((location) => {
-  console.log('Nouvelle position:', location)
-})
+// Basculer entre les thèmes
+themeStore.toggleTheme()
+
+// Obtenir le thème actuel
+console.log('Thème:', themeStore.currentTheme)
 ```
 
 ## 🧪 Tests
@@ -226,29 +219,26 @@ npm run test:watch
 ### Exemple de Test
 
 ```javascript
-import { useProfileStore } from '@/stores/profile'
+import { useAuthStore } from '@/stores/auth'
 
-describe('ProfileStore', () => {
-  it('should create profile successfully', async () => {
-    const store = useProfileStore()
-    const result = await store.upsertProfile('user-id', {
-      first_name: 'John',
-      last_name: 'Doe'
-    })
+describe('AuthStore', () => {
+  it('should sign up user successfully', async () => {
+    const store = useAuthStore()
+    const result = await store.signUp('test@example.com', 'password123', 'testuser')
     
     expect(result.success).toBe(true)
-    expect(store.isProfileComplete).toBe(true)
+    expect(store.isAuthenticated).toBe(true)
   })
 })
 ```
 
 ## 📱 Interface Utilisateur
 
-### Configuration Guidée
-1. **Informations de base**: Nom, préférences, objectifs
-2. **Données de santé**: Poids, taille, âge (optionnel)
-3. **Géolocalisation**: Permissions GPS (optionnel)
-4. **Récapitulatif**: Validation finale
+### Fonctionnalités Principales
+1. **Authentification**: Inscription/Connexion sécurisée
+2. **Thèmes**: Mode clair/sombre avec détection système
+3. **Entraînement**: Programmes de course personnalisés
+4. **Timer**: Chronomètre avec phases d'entraînement
 
 ### Responsive Design
 - Mobile-first avec Tailwind CSS
@@ -259,22 +249,21 @@ describe('ProfileStore', () => {
 ## 📚 Documentation
 
 ### Guides Disponibles
-- [`guide/SECURE_DATABASE_SETUP.md`](guide/SECURE_DATABASE_SETUP.md) - Configuration BDD
-- [`guide/ARCHITECTURE_GUIDE.md`](guide/ARCHITECTURE_GUIDE.md) - Architecture détaillée
-- [`guide/DEVELOPER_GUIDE.md`](guide/DEVELOPER_GUIDE.md) - Guide développeur
+- [`guide/PWA_SETUP.md`](guide/PWA_SETUP.md) - Configuration PWA
 
 ### Structure des Composants
 ```
 src/components/
-├── profile/
-│   ├── CompleteProfileSetup.vue    # Orchestrateur principal
-│   ├── BasicProfileForm.vue        # Formulaire de base
-│   ├── HealthDataForm.vue          # Données de santé
-│   └── ProfileSummary.vue          # Récapitulatif
-├── location/
-│   └── LocationPermissionCard.vue  # Géolocalisation
-└── ui/
-    └── ...                         # Composants UI
+├── layout/
+│   ├── AppLayout.vue               # Layout principal
+│   ├── MobileHeader.vue           # Header mobile
+│   ├── MobileNavigation.vue       # Navigation mobile
+│   └── DesktopNavigation.vue      # Navigation desktop
+├── training/
+│   └── Timer.vue                  # Composant timer
+├── ui/
+│   └── ...                        # Composants UI
+└── PWA*.vue                       # Composants PWA
 ```
 
 ## 🚀 Déploiement
